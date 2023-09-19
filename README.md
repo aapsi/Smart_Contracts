@@ -1,2 +1,2 @@
 # Smart_Contracts
-All the Smart Contracts I've writtern
+All the Smart Contracts I've written
