@@ -8,25 +8,20 @@ contract Lottery {
     address payable public winner;
 
     constructor() {
-        // the person who will be deploying the smart contract is the manager
+        // the person who will be deploying the smart contract is manager
         manager = msg.sender;
     }
-        
-    function getBalance() public view returns(uint) {
+
+    receive() external payable {
+        // putting a check to make sure the participant has atleast 0.001 ether when they are applying
+        require(msg.value == 0.001 ether, "Please pay 0.001 ether to participate");
+        // the person who is participating, we need their addresss
+        players.push(payable(msg.sender));
+    }
+
+    function getBalance() public view returns(uint){
+        // only manager can check the balance
         require(manager == msg.sender, "You are not the manager");
-        return address(this).balance;
     }
 
-    function random() internal view returns(uint) {
-        uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players.length)));
-    }
-
-    function pickWinner() view public {
-        require(msg.sender == manager, "You are not the manager");
-        require(players.length >= 3, "Players are less than 3");
-
-        uint r = random();
-        uint index = r % players.length;
-
-    }
 }
